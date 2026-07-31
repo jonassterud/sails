@@ -1,5 +1,9 @@
 use axum::{
-    async_trait, extract::{FromRequestParts, Query, Request}, http::request::Parts, response::Redirect, routing::get, Router
+    Router, async_trait,
+    extract::{FromRequestParts, Query, Request},
+    http::request::Parts,
+    response::Redirect,
+    routing::get,
 };
 use serde::Deserialize;
 use tower::util::ServiceExt;
@@ -12,23 +16,23 @@ pub fn router() -> Router {
         .nest_service("/assets", ServeDir::new("crates/www/assets"))
         .nest_service("/vendor", ServeDir::new("crates/www/vendor"))
         .nest_service("/", ServeFile::new("crates/www/pages/index.html"))
-        //.route("/", get(|| async { Redirect::permanent("/map") }))
-        //.nest_service("/map", ServeFile::new("crates/www/pages/map.html"))
-        //.nest_service("/about", ServeFile::new("crates/www/pages/about.html"))
-        // .nest_service(
-        //     "/takeoffs",
-        //     get(|params: Params, request: Request| async move {
-        //         if params.id.is_some() {
-        //             ServeDir::new("crates/www/pages/takeoff.html")
-        //                 .oneshot(request)
-        //                 .await
-        //         } else {
-        //             ServeDir::new("crates/www/pages/list.html")
-        //                 .oneshot(request)
-        //                 .await
-        //         }
-        //     }),
-        // )
+    //.route("/", get(|| async { Redirect::permanent("/map") }))
+    //.nest_service("/map", ServeFile::new("crates/www/pages/map.html"))
+    //.nest_service("/about", ServeFile::new("crates/www/pages/about.html"))
+    // .nest_service(
+    //     "/takeoffs",
+    //     get(|params: Params, request: Request| async move {
+    //         if params.id.is_some() {
+    //             ServeDir::new("crates/www/pages/takeoff.html")
+    //                 .oneshot(request)
+    //                 .await
+    //         } else {
+    //             ServeDir::new("crates/www/pages/list.html")
+    //                 .oneshot(request)
+    //                 .await
+    //         }
+    //     }),
+    // )
 }
 
 #[derive(Default)]

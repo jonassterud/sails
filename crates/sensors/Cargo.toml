@@ -1,0 +1,17 @@
+[package]
+name = "sensors"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "sensors_lib"
+crate-type = ["lib"]
+
+[dependencies]
+utils = { path = "../utils" }
+
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+sqlx = { workspace = true, features = ["runtime-tokio", "sqlite"] }

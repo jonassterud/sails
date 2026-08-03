@@ -27,7 +27,7 @@ pub async fn run() -> Result<(), Error> {
     let random = Arc::new(Mutex::new(ChaCha8Rng::seed_from_u64(OsRng.next_u64())));
     
     let app = Router::new()
-        .merge(routers::default::router())
+        .merge(routers::web::router())
         .merge(routers::api::router())
         .layer(CorsLayer::very_permissive()) // TODO
         .layer(TraceLayer::new_for_http())

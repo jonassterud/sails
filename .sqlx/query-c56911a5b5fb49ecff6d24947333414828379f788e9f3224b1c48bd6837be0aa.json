@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO position (timestamp, latitude, longitude) VALUES (?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "c56911a5b5fb49ecff6d24947333414828379f788e9f3224b1c48bd6837be0aa"
+}

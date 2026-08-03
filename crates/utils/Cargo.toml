@@ -9,3 +9,4 @@ rust-version.workspace = true
 [dependencies]
 axum = { workspace = true, features = [] }
 sqlx = { workspace = true, features = ["runtime-tokio", "sqlite"] }
+serde = { workspace = true, features = ["derive"] }

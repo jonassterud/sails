@@ -2117,6 +2117,7 @@ name = "utils"
 version = "0.0.0"
 dependencies = [
  "axum",
+ "serde",
  "sqlx",
 ]
 

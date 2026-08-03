@@ -1,4 +1,4 @@
 mod error;
 
-pub use error::Error;
 pub mod database;
+pub use error::Error;

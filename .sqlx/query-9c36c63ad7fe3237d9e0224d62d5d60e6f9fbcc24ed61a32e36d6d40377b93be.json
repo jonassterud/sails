@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO temperature (timestamp, value) VALUES (?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "9c36c63ad7fe3237d9e0224d62d5d60e6f9fbcc24ed61a32e36d6d40377b93be"
+}

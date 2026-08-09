@@ -1,0 +1,12 @@
+[package]
+name = "utils"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+axum = { workspace = true, features = [] }
+sqlx = { workspace = true, features = ["runtime-tokio", "sqlite"] }
+serde = { workspace = true, features = ["derive"] }

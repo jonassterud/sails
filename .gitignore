@@ -1,0 +1,9 @@
+**/debug/
+**/target/
+**/*.rs.bk
+**/*.pdb
+**/logs
+**/*.db
+**/*-shm
+**/*-wal
+**/misc/test*.txt

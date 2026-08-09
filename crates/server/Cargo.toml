@@ -1,0 +1,26 @@
+[package]
+name = "server"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "server_lib"
+crate-type = ["lib"]
+
+[dependencies]
+utils = { path = "../utils" }
+
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+serde = { workspace = true, features = ["derive"] }
+anyhow = { workspace = true, features = [] }
+tracing = { workspace = true, features = [] }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+sqlx = { workspace = true, features = ["runtime-tokio", "sqlite"] }
+axum = { workspace = true, features = ["tracing", "json", "macros", "query"] }
+
+tower =  { version = "0.4", features = ["util"] }
+tower-http = { version = "0.5", features = ["trace", "cors", "fs"] }
+axum-extra = { version = "0.9", features = ["query"] }

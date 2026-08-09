@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM position SORTED LIMIT ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "timestamp",
+        "ordinal": 0,
+        "type_info": "Int64"
+      },
+      {
+        "name": "latitude",
+        "ordinal": 1,
+        "type_info": "Float"
+      },
+      {
+        "name": "longitude",
+        "ordinal": 2,
+        "type_info": "Float"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "7ba512cb637e8a5b45d7c8d819de210aeef180c9dc791aa968724132f3cf5cff"
+}

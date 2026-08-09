@@ -1,5 +1,5 @@
 use axum::{
-    Extension, Json, Router, async_trait,
+    Extension, Json, Router,
     extract::{FromRequestParts, Query},
     http::request::Parts,
     routing::{get, post},
@@ -25,9 +25,6 @@ pub fn router() -> Router {
 #[serde(default)]
 struct Params {
     limit: Option<i32>,
-    value: Option<i32>,
-    latitude: Option<i32>,
-    longitude: Option<i32>,
 }
 
 async fn get_health(pool: Extension<SqlitePool>) -> Result<String, Error> {
@@ -57,13 +54,15 @@ async fn get_temperature(
 
 async fn set_temperature(
     pool: Extension<SqlitePool>,
-    Query(params): Query<Params>,
+    Json(data): Json<models::NewTemperature>,
 ) -> Result<(), Error> {
-    let value = params.value.ok_or(Error::BAD_REQUEST("Missing value"))?;
-    let _ = sqlx::query!(
-        "INSERT INTO temperature (timestamp, value) VALUES (?, ?)",
-        0,
-        value
+    sqlx::query!(
+        r#"
+            INSERT INTO temperature(timestamp, value)
+            VALUES ($1, $2)
+        "#,
+        timestamp()?,
+        data.value
     )
     .execute(&pool.0)
     .await
@@ -80,7 +79,7 @@ async fn get_humidity(
     let data = sqlx::query_as!(
         models::Humidity,
         "SELECT * FROM humidity SORTED LIMIT ?",
-        limit
+        &limit
     )
     .fetch_all(&pool.0)
     .await
@@ -91,13 +90,15 @@ async fn get_humidity(
 
 async fn set_humidity(
     pool: Extension<SqlitePool>,
-    Query(params): Query<Params>,
+    Json(data): Json<models::NewHumidity>,
 ) -> Result<(), Error> {
-    let value = params.value.ok_or(Error::BAD_REQUEST("Missing value"))?;
-    let _ = sqlx::query!(
-        "INSERT INTO humidity (timestamp, value) VALUES (?, ?)",
-        0,
-        value
+    sqlx::query!(
+        r#"
+            INSERT INTO humidity(timestamp, value)
+            VALUES ($1, $2)
+        "#,
+        timestamp()?,
+        data.value
     )
     .execute(&pool.0)
     .await
@@ -114,7 +115,7 @@ async fn get_battery(
     let data = sqlx::query_as!(
         models::Battery,
         "SELECT * FROM battery SORTED LIMIT ?",
-        limit
+        &limit
     )
     .fetch_all(&pool.0)
     .await
@@ -125,13 +126,15 @@ async fn get_battery(
 
 async fn set_battery(
     pool: Extension<SqlitePool>,
-    Query(params): Query<Params>,
+    Json(data): Json<models::NewBattery>,
 ) -> Result<(), Error> {
-    let value = params.value.ok_or(Error::BAD_REQUEST("Missing value"))?;
-    let _ = sqlx::query!(
-        "INSERT INTO battery (timestamp, value) VALUES (?, ?)",
-        0,
-        value
+    sqlx::query!(
+        r#"
+            INSERT INTO battery(timestamp, value)
+            VALUES ($1, $2)
+        "#,
+        timestamp()?,
+        data.value
     )
     .execute(&pool.0)
     .await
@@ -159,19 +162,16 @@ async fn get_position(
 
 async fn set_position(
     pool: Extension<SqlitePool>,
-    Query(params): Query<Params>,
+    Json(data): Json<models::NewPosition>,
 ) -> Result<(), Error> {
-    let latitude = params
-        .latitude
-        .ok_or(Error::BAD_REQUEST("Missing latitude"))?;
-    let longitude = params
-        .longitude
-        .ok_or(Error::BAD_REQUEST("Missing longitude"))?;
-    let _ = sqlx::query!(
-        "INSERT INTO position (timestamp, latitude, longitude) VALUES (?, ?, ?)",
-        0,
-        latitude,
-        longitude,
+    sqlx::query!(
+        r#"
+            INSERT INTO position(timestamp, latitude, longitude)
+            VALUES ($1, $2, $3)
+        "#,
+        timestamp()?,
+        data.latitude,
+        data.longitude,
     )
     .execute(&pool.0)
     .await
@@ -180,7 +180,12 @@ async fn set_position(
     Ok(())
 }
 
-#[async_trait]
+fn timestamp() -> Result<i64, Error> {
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs() as i64)
+}
+
 impl<S> FromRequestParts<S> for Params
 where
     S: Send + Sync,

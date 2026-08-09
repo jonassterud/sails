@@ -7,5 +7,5 @@ pub fn router() -> Router {
         .nest_service("/styles", ServeDir::new("crates/www/styles"))
         .nest_service("/assets", ServeDir::new("crates/www/assets"))
         .nest_service("/vendor", ServeDir::new("crates/www/vendor"))
-        .nest_service("/", ServeFile::new("crates/www/pages/index.html"))
+        .route_service("/", ServeFile::new("crates/www/pages/index.html"))
 }

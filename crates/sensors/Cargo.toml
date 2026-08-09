@@ -1,5 +1,6 @@
 [package]
 name = "sensors"
+description = "Reads specified sensors asynchronously and updates database."
 version.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -13,5 +14,10 @@ crate-type = ["lib"]
 [dependencies]
 utils = { path = "../utils" }
 
-tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+clap = { workspace = true, features = ["derive"] }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time"] }
+tracing = { workspace = true, features = [] }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
 sqlx = { workspace = true, features = ["runtime-tokio", "sqlite"] }
+
+reqwest = { version = "0.13", features = ["json"] }

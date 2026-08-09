@@ -7,11 +7,12 @@ use utils::{Error, database};
 
 pub async fn run() -> Result<(), Error> {
     // Set up tracing subscriber
-    const DEFAULT_FILTER: &str = "server=debug,tower_http=debug,axum::rejection=trace";
+    const DEFAULT_FILTER: &str = "server=debug,tower_http=debug,axum::rejection=trace,sqlx=trace";
     tracing_subscriber::registry()
         .with(EnvFilter::try_from_default_env().unwrap_or_else(|_| DEFAULT_FILTER.into()))
         .with(tracing_subscriber::fmt::layer())
-        .init();
+        .try_init()
+        .map_err(Error::new)?;
 
     // Create and initialize database
     let pool = database::connection::pool(true).await?;

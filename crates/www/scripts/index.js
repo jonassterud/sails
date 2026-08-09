@@ -24,20 +24,7 @@ window.onload = () => {
     scene.add(dirLight);
 
     // Model loaders
-    const mtlLoader = new MTLLoader();
     const objLoader = new OBJLoader();
-    
-    // mtlLoader.load("assets/sailboat.mtl", (materials) => {
-    //     materials.preload();
-    //     objLoader.setMaterials(materials);
-    //     objLoader.load("assets/sailboat.obj", (object) => {
-    //         object.position.set(0, 0, 0);
-    //         object.scale.setScalar(1);
-    //         sailboat = object;
-
-    //         scene.add(object);
-    //     }, undefined, (error) => console.error(`OBJ error: ${error}`));
-    // }, undefined, (error) => console.error(`MTL error: ${error}`));
 
     objLoader.load("assets/sailboat.obj", (object) => {
         object.position.set(0, 0, 0);
@@ -58,6 +45,34 @@ window.onload = () => {
         scene.add(object);
     }, undefined, (error) => console.error(`OBJ error: ${error}`));
 
+    // Raycaster
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    window.addEventListener("click", onPointerDown);
+
+    function onPointerDown(event) {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+
+        const intersects = raycaster.intersectObjects(scene.children, true);
+
+        if (intersects.length > 0) {
+            const hit = intersects[50];
+
+            const geometry = new THREE.SphereGeometry(0.5, 32, 16);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            const sphere = new THREE.Mesh(geometry, material);
+
+            sphere.position.set(hit.point.x, hit.point.y, hit.point.z);
+            scene.add(sphere);
+            hit.object.attach(sphere);
+        }
+    }
+
+    // Loop
     function animate(time) {
         renderer.render(scene, camera);
 

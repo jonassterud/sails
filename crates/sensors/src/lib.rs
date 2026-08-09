@@ -136,7 +136,3 @@ fn interval(timeout: u64) -> time::Interval {
 
     out
 }
-
-fn read_write() {
-
-}

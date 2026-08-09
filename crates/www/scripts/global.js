@@ -20,6 +20,27 @@ async function fetch_temperature(limit = 10) {
 }
 
 /**
+ * Fetch battery data points.
+ * 
+ * @param {Number} [limit] - Number of data points to fetch, defaults to `10`.
+ * @returns {Promise<Array<Object>>} A list of temperatures as objects.
+ */
+async function fetch_battery(limit = 10) {
+    try {
+        const url = new URL(window.location.origin);
+        url.pathname = "/api/battery";
+        url.searchParams.append("limit", limit);
+
+        const response = await fetch(url);
+        const out = response.json();
+
+        return out;
+    } catch (error) {
+        throw error;
+    }
+}
+
+/**
  * Fetch humidity data points.
  * 
  * @param {Number} [limit] - Number of data points to fetch, defaults to `10`.
